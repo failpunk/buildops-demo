@@ -42,7 +42,9 @@ const EmployeeTable = () => (
             <TableRow>
                 <TableCell>John</TableCell>
                 <TableCell>Smith</TableCell>
-                <TableCell><a href="">2 addresses</a></TableCell>
+                <TableCell>
+                    <a href="">2 addresses</a>
+                </TableCell>
                 <TableCell>
                     {skills.map(skill => {
                         return (
@@ -67,8 +69,12 @@ const EmployeeTable = () => (
             <TableRow>
                 <TableCell>Egor</TableCell>
                 <TableCell>Whatevs</TableCell>
-                <TableCell><a href="">add address</a></TableCell>
-                <TableCell><a href="">add a skill</a></TableCell>
+                <TableCell>
+                    <a href="">add address</a>
+                </TableCell>
+                <TableCell>
+                    <a href="">add a skill</a>
+                </TableCell>
                 <TableCell>
                     <DeleteIcon />
                     <EditIcon />
