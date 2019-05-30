@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-import AddEmployee from './components/add-employee';
+import AddEmployee from './components/employee-add';
 import EmployeeTable from './components/employee-table';
 
 export default function Album() {
@@ -29,6 +29,7 @@ export default function Album() {
                 >
                     Employee Directory
                 </Typography>
+
                 <AddEmployee />
 
                 <Container maxWidth="lg">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -6,82 +6,61 @@ import {
     TableCell,
     TableRow
 } from '@material-ui/core';
-import Chip from '@material-ui/core/Chip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import { API, graphqlOperation } from 'aws-amplify';
+import { listEmployees } from '../graphql/queries';
+import { onCreateEmployee } from '../graphql/subscriptions';
 
-import AddressTable from './address-table';
+import EmployeeTableRow from './employee-table-row';
 
-const skills = [
-    {
-        ID: 1,
-        name: 'react'
-    },
-    {
-        ID: 2,
-        name: 'html'
-    },
-    {
-        ID: 3,
-        name: 'css'
-    }
-];
+export default function EmployeeTable() {
+    const [employeeList, setEmployeeList] = useState([]);
 
-const EmployeeTable = () => (
-    <Table>
-        <TableHead>
-            <TableRow>
-                <TableCell>First Name</TableCell>
-                <TableCell>Last Name</TableCell>
-                <TableCell>Address</TableCell>
-                <TableCell>Skills</TableCell>
-                <TableCell />
-            </TableRow>
-        </TableHead>
-        <TableBody>
-            <TableRow>
-                <TableCell>John</TableCell>
-                <TableCell>Smith</TableCell>
-                <TableCell>
-                    <a href="">2 addresses</a>
-                </TableCell>
-                <TableCell>
-                    {skills.map(skill => {
-                        return (
-                            <Chip
-                                key={skill.ID}
-                                label={skill.name}
-                                onDelete={() => {
-                                    console.log('DELETE CHIP');
-                                }}
-                            />
-                        );
-                    })}
-                </TableCell>
-                <TableCell>
-                    <DeleteIcon />
-                    <EditIcon />
-                </TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell colSpan={5} children={<AddressTable />} />
-            </TableRow>
-            <TableRow>
-                <TableCell>Egor</TableCell>
-                <TableCell>Whatevs</TableCell>
-                <TableCell>
-                    <a href="">add address</a>
-                </TableCell>
-                <TableCell>
-                    <a href="">add a skill</a>
-                </TableCell>
-                <TableCell>
-                    <DeleteIcon />
-                    <EditIcon />
-                </TableCell>
-            </TableRow>
-        </TableBody>
-    </Table>
-);
+    // Subscribe to employee changes.
+    const subscription = API.graphql(
+        graphqlOperation(onCreateEmployee)
+    ).subscribe({
+        next: employeeData => {
+            let newEmployee = employeeData.value.data.onCreateEmployee;
+            setEmployeeList([...employeeList, newEmployee]);
+        }
+    });
 
-export default EmployeeTable;
+    useEffect(() => {
+        async function fetchEmployees() {
+            const result = await API.graphql(graphqlOperation(listEmployees));
+            setEmployeeList(result.data.listEmployees.items);
+        }
+
+        fetchEmployees();
+
+        // Unsubscribe from employee updates.
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, []);
+
+    return (
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>First Name</TableCell>
+                    <TableCell>Last Name</TableCell>
+                    <TableCell>Address</TableCell>
+                    <TableCell>Skills</TableCell>
+                    <TableCell />
+                </TableRow>
+            </TableHead>
+
+            <TableBody>
+                {employeeList.map(employee => {
+                    return (
+                        <EmployeeTableRow
+                            key={employee.id}
+                            employee={employee}
+                        />
+                    );
+                })}
+            </TableBody>
+        </Table>
+    );
+}
