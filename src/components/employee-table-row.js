@@ -4,21 +4,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Api from '../services/api.service';
 
-const skills = [
-    {
-        ID: 1,
-        name: 'react'
-    },
-    {
-        ID: 2,
-        name: 'html'
-    },
-    {
-        ID: 3,
-        name: 'css'
-    }
-];
-
 export default function EmployeeTableRow({ employee }) {
     async function deleteEmployee() {
         try {
@@ -33,15 +18,13 @@ export default function EmployeeTableRow({ employee }) {
             <TableCell>{employee.firstname}</TableCell>
             <TableCell>{employee.lastname}</TableCell>
             <TableCell>
-                <a href="/">
-                    {employee.address ? employee.address : 'add address'}
-                </a>
+                <a href="/">add address</a>
             </TableCell>
             <TableCell>
-                {skills.map(skill => {
+                {employee.skills.map((skill, i) => {
                     return (
                         <Chip
-                            key={skill.ID}
+                            key={i}
                             label={skill.name}
                             onDelete={() => {
                                 console.log('todo: delete skill');

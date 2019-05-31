@@ -7,6 +7,7 @@
         "@material-ui/icons": "^4.0.1",
         "aws-amplify": "^1.1.28",
         "aws-amplify-react": "^2.3.8",
+        "material-ui-chip-input": "^1.0.0-beta.17",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
         "react-fetch-hook": "^1.5.2",

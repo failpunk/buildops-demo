@@ -14,7 +14,6 @@ export const createEmployee = `mutation CreateEmployee($input: CreateEmployeeInp
       zipcode
     }
     skills {
-      id
       name
     }
   }
@@ -33,7 +32,6 @@ export const updateEmployee = `mutation UpdateEmployee($input: UpdateEmployeeInp
       zipcode
     }
     skills {
-      id
       name
     }
   }
@@ -52,60 +50,8 @@ export const deleteEmployee = `mutation DeleteEmployee($input: DeleteEmployeeInp
       zipcode
     }
     skills {
-      id
       name
     }
-  }
-}
-`;
-export const createAddress = `mutation CreateAddress($input: CreateAddressInput!) {
-  createAddress(input: $input) {
-    line1
-    line2
-    city
-    state
-    zipcode
-  }
-}
-`;
-export const updateAddress = `mutation UpdateAddress($input: UpdateAddressInput!) {
-  updateAddress(input: $input) {
-    line1
-    line2
-    city
-    state
-    zipcode
-  }
-}
-`;
-export const deleteAddress = `mutation DeleteAddress($input: DeleteAddressInput!) {
-  deleteAddress(input: $input) {
-    line1
-    line2
-    city
-    state
-    zipcode
-  }
-}
-`;
-export const createSkill = `mutation CreateSkill($input: CreateSkillInput!) {
-  createSkill(input: $input) {
-    id
-    name
-  }
-}
-`;
-export const updateSkill = `mutation UpdateSkill($input: UpdateSkillInput!) {
-  updateSkill(input: $input) {
-    id
-    name
-  }
-}
-`;
-export const deleteSkill = `mutation DeleteSkill($input: DeleteSkillInput!) {
-  deleteSkill(input: $input) {
-    id
-    name
   }
 }
 `;

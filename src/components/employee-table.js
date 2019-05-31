@@ -45,6 +45,7 @@ export default function EmployeeTable() {
     useEffect(() => {
         async function fetchEmployees() {
             const employees = await Api.getAllEmployees();
+            console.log('employees', employees);
             setEmployeeList(employees);
             setIsLoading(false);
         }

@@ -6,7 +6,7 @@ type Employee @model {
   skills: [Skill]
 }
 
-type Address @model {
+type Address {
   line1: String!
   line2: String!
   city: String!
@@ -14,7 +14,6 @@ type Address @model {
   zipcode: String!
 }
 
-type Skill @model {
-  id: ID!
+type Skill {
   name: String!
 }

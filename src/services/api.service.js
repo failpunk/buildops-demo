@@ -4,7 +4,10 @@ import { createEmployee, deleteEmployee } from '../graphql/mutations';
 import { listEmployees } from '../graphql/queries';
 
 export default {
-    // Subscribe to employee changes.
+    unwrap(result, key) {
+        return result.data[key].items;
+    },
+
     onCreateEmployee(fn) {
         return this.subscribe(onCreateEmployee, fn);
     },
@@ -21,11 +24,14 @@ export default {
 
     async getAllEmployees() {
         const result = await API.graphql(graphqlOperation(listEmployees));
-        return result.data.listEmployees.items;
+        return this.unwrap(result, 'listEmployees');
     },
 
-    createEmployee(values) {
-        return API.graphql(graphqlOperation(createEmployee, { input: values }));
+    async createEmployee(values) {
+        const result = await API.graphql(
+            graphqlOperation(createEmployee, { input: values })
+        );
+        return this.unwrap(result, 'createEmployee');
     },
 
     deleteEmployee(id) {

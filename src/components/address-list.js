@@ -6,12 +6,9 @@ function AddressList() {
     const [addressList, setAddressList] = useState([]);
 
     useEffect(() => {
-        console.log('addressList', addressList);
-
         async function fetchAddresses() {
             const result = await API.graphql(graphqlOperation(listAddresss));
 
-            console.log('result.data', result.data.listAddresss.items);
             setAddressList(result.data.listAddresss.items);
         }
 
