@@ -1,8 +1,7 @@
 import React from 'react';
 import { useFormState } from 'react-use-form-state';
-import { Button, Divider, TextField } from '@material-ui/core';
-import { API, graphqlOperation } from 'aws-amplify';
-import { createEmployee } from '../graphql/mutations';
+import { Button, TextField } from '@material-ui/core';
+import Api from '../services/api.service';
 
 export default function EmployeeForm() {
     const [formState, { text }] = useFormState();
@@ -37,20 +36,14 @@ export default function EmployeeForm() {
     function submitForm(event) {
         event.preventDefault();
 
-        const { values, validity } = formState;
+        const { values } = formState;
 
         createNewEmployee(values);
     }
 
     async function createNewEmployee(formValues) {
-        console.log('createEmployee', formValues);
-
         try {
-            const postData = await API.graphql(
-                graphqlOperation(createEmployee, { input: formValues })
-            );
-
-            console.log('postData', postData);
+            await Api.createEmployee(formValues);
         } catch (err) {
             console.log('ERROR CREATING ADDRESS', err);
         }

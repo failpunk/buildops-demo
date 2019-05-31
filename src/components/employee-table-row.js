@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { TableCell, TableRow, IconButton, Chip } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import Api from '../services/api.service';
 
 const skills = [
     {
@@ -19,12 +20,20 @@ const skills = [
 ];
 
 export default function EmployeeTableRow({ employee }) {
+    async function deleteEmployee() {
+        try {
+            await Api.deleteEmployee(employee.id);
+        } catch (err) {
+            console.log('ERROR DELETING EMPLOYEE', err.errors);
+        }
+    }
+
     return (
         <TableRow>
             <TableCell>{employee.firstname}</TableCell>
             <TableCell>{employee.lastname}</TableCell>
             <TableCell>
-                <a href="">
+                <a href="/">
                     {employee.address ? employee.address : 'add address'}
                 </a>
             </TableCell>
@@ -42,7 +51,7 @@ export default function EmployeeTableRow({ employee }) {
                 })}
             </TableCell>
             <TableCell>
-                <IconButton aria-label="Delete">
+                <IconButton aria-label="Delete" onClick={deleteEmployee}>
                     <DeleteIcon />
                 </IconButton>
                 <IconButton aria-label="Edit">
