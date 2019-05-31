@@ -21,10 +21,16 @@ export default function AddEmployee() {
                             </Button>
                         )}
 
-                        {isAddingEmployee && <EmployeeForm />}
+                        {isAddingEmployee && (
+                            <EmployeeForm onFormSubmit={formSubmitted} />
+                        )}
                     </Box>
                 </Grid>
             </Grid>
         </Container>
     );
+
+    function formSubmitted() {
+        setIsAddingEmployee(false);
+    }
 }

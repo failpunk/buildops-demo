@@ -4,7 +4,7 @@ import { Button, Grid, TextField, Typography } from '@material-ui/core';
 import ChipInput from 'material-ui-chip-input';
 import Api from '../../services/api.service';
 
-export default function EmployeeForm() {
+export default function EmployeeForm({ onFormSubmit }) {
     const [formState, { text }] = useFormState({});
     const [skills, setSkills] = useState([]);
 
@@ -124,6 +124,7 @@ export default function EmployeeForm() {
 
         try {
             await Api.createEmployee(formValues);
+            onFormSubmit();
         } catch (err) {
             console.log('ERROR CREATING ADDRESS', err);
         }
