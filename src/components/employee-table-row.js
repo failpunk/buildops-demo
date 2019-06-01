@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { TableCell, TableRow, IconButton, Chip } from '@material-ui/core';
+import { TableCell, TableRow, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Api from '../services/api.service';
 import AddressTable from './address-table';
+import EmployeeSkills from './employee-skills';
 
 export default function EmployeeTableRow({ employee }) {
     const [showAddressRow, setShowAddressRow] = useState(false);
@@ -18,6 +19,16 @@ export default function EmployeeTableRow({ employee }) {
 
     async function editEmployee() {
         console.log('TODO: implement edit functionality');
+    }
+
+    async function deleteSkill(name) {
+        employee.skills = employee.skills.filter(skill => skill.name !== name);
+
+        try {
+            await Api.updateEmployee(employee);
+        } catch (err) {
+            console.log('ERROR DELETING SKILL', err.errors);
+        }
     }
 
     function toggleAddressRows() {
@@ -38,17 +49,10 @@ export default function EmployeeTableRow({ employee }) {
                     )}
                 </TableCell>
                 <TableCell>
-                    {employee.skills.map((skill, i) => {
-                        return (
-                            <Chip
-                                key={i}
-                                label={skill.name}
-                                onDelete={() => {
-                                    console.log('todo: delete skill');
-                                }}
-                            />
-                        );
-                    })}
+                    <EmployeeSkills
+                        skills={employee.skills}
+                        onClickedDelete={deleteSkill}
+                    />
                 </TableCell>
                 <TableCell>
                     <IconButton aria-label="Delete" onClick={deleteEmployee}>

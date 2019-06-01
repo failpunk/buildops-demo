@@ -26,6 +26,26 @@ export default function EmployeeTable() {
         return () => onCreated.unsubscribe();
     });
 
+    // Subscribe to employee updates.
+    useEffect(() => {
+        const onUpdate = Api.onUpdateEmployee(data => {
+            let updatedEmployee = data.value.data.onUpdateEmployee;
+            console.log('updatedEmployee', updatedEmployee);
+            
+            const updatedList = employeeList.map(employee => {
+                if (employee.id === updatedEmployee.id) {
+                    return updatedEmployee;
+                }
+
+                return employee;
+            });
+
+            setEmployeeList(updatedList);
+        });
+
+        return () => onUpdate.unsubscribe();
+    });
+
     // Subscribe to employee deletions.
     useEffect(() => {
         const onDeleted = Api.onDeleteEmployee(data => {

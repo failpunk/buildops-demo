@@ -1,6 +1,14 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import { onCreateEmployee, onDeleteEmployee } from '../graphql/subscriptions';
-import { createEmployee, deleteEmployee } from '../graphql/mutations';
+import {
+    onCreateEmployee,
+    onDeleteEmployee,
+    onUpdateEmployee
+} from '../graphql/subscriptions';
+import {
+    createEmployee,
+    deleteEmployee,
+    updateEmployee
+} from '../graphql/mutations';
 import { listEmployees } from '../graphql/queries';
 
 export default {
@@ -10,6 +18,10 @@ export default {
 
     onCreateEmployee(fn) {
         return this.subscribe(onCreateEmployee, fn);
+    },
+
+    onUpdateEmployee(fn) {
+        return this.subscribe(onUpdateEmployee, fn);
     },
 
     onDeleteEmployee(fn) {
@@ -32,6 +44,10 @@ export default {
             graphqlOperation(createEmployee, { input: values })
         );
         return this.unwrap(result, 'createEmployee');
+    },
+
+    updateEmployee(values) {
+        return API.graphql(graphqlOperation(updateEmployee, { input: values }));
     },
 
     deleteEmployee(id) {
