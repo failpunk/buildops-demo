@@ -31,7 +31,7 @@ export default function EmployeeTable() {
         const onUpdate = Api.onUpdateEmployee(data => {
             let updatedEmployee = data.value.data.onUpdateEmployee;
             console.log('updatedEmployee', updatedEmployee);
-            
+
             const updatedList = employeeList.map(employee => {
                 if (employee.id === updatedEmployee.id) {
                     return updatedEmployee;
@@ -97,6 +97,19 @@ export default function EmployeeTable() {
                             );
                         })}
                 </TableBody>
+
+                {!isLoading && !employeeList.length && (
+                    <TableBody>
+                        <TableRow>
+                            <TableCell
+                                style={{ textAlign: 'center' }}
+                                colSpan={5}
+                            >
+                                You have not yet added any employees
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                )}
             </Table>
 
             <Box m={2} style={{ textAlign: 'center' }}>
