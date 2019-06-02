@@ -1,11 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useFormState } from 'react-use-form-state';
-import { Box, Button, Grid, TextField, Typography } from '@material-ui/core';
+import {
+    Box,
+    Button,
+    Grid,
+    makeStyles,
+    TextField,
+    Typography
+} from '@material-ui/core';
 import ChipInput from 'material-ui-chip-input';
 import Api from '../../services/api.service';
 import AddressForm from './address-form';
 
-export default function EmployeeForm({ onFormSubmit }) {
+const useStyles = makeStyles(theme => ({
+    button: {
+        margin: theme.spacing(1)
+    }
+}));
+
+export default function EmployeeForm({ onFormSubmit, onCancel }) {
+    const classes = useStyles();
     const [formState, { text, raw }] = useFormState({ address: [] });
     const [skills, setSkills] = useState([]);
 
@@ -104,8 +118,16 @@ export default function EmployeeForm({ onFormSubmit }) {
             </Grid>
 
             <Grid item container justify="center" xs={12} className="margin-2">
-                <Button type="submit" variant="contained" color="primary">
+                <Button
+                    type="submit"
+                    variant="contained"
+                    className={classes.button}
+                    color="primary"
+                >
                     Submit
+                </Button>
+                <Button variant="contained" className={classes.button} onClick={onCancel}>
+                    Cancel
                 </Button>
             </Grid>
         </form>

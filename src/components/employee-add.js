@@ -22,7 +22,10 @@ export default function AddEmployee() {
                         )}
 
                         {isAddingEmployee && (
-                            <EmployeeForm onFormSubmit={formSubmitted} />
+                            <EmployeeForm
+                                onFormSubmit={formSubmitted}
+                                onCancel={formSubmitted}
+                            />
                         )}
                     </Box>
                 </Grid>
@@ -31,6 +34,7 @@ export default function AddEmployee() {
     );
 
     function formSubmitted() {
+        console.log('formSubmitted');
         setIsAddingEmployee(false);
     }
 }
