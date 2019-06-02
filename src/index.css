@@ -10,3 +10,6 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+.margin-2 {
+    margin: 2rem 0 !important;
+}

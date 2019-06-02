@@ -16,10 +16,18 @@ export default function EmployeeTable() {
     const [employeeList, setEmployeeList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    function cleanEmployeeObj(employee) {
+        console.log('cleanEmployeeObj', employee);
+        delete employee.__typename;
+        return employee;
+    }
+
     // Subscribe to employee changes.
     useEffect(() => {
         const onCreated = Api.onCreateEmployee(data => {
-            let newEmployee = data.value.data.onCreateEmployee;
+            let newEmployee = cleanEmployeeObj(
+                data.value.data.onCreateEmployee
+            );
             setEmployeeList([newEmployee, ...employeeList]);
         });
 
@@ -29,8 +37,9 @@ export default function EmployeeTable() {
     // Subscribe to employee updates.
     useEffect(() => {
         const onUpdate = Api.onUpdateEmployee(data => {
-            let updatedEmployee = data.value.data.onUpdateEmployee;
-            console.log('updatedEmployee', updatedEmployee);
+            let updatedEmployee = cleanEmployeeObj(
+                data.value.data.onUpdateEmployee
+            );
 
             const updatedList = employeeList.map(employee => {
                 if (employee.id === updatedEmployee.id) {
@@ -49,7 +58,9 @@ export default function EmployeeTable() {
     // Subscribe to employee deletions.
     useEffect(() => {
         const onDeleted = Api.onDeleteEmployee(data => {
-            let deletedEmployee = data.value.data.onDeleteEmployee;
+            let deletedEmployee = cleanEmployeeObj(
+                data.value.data.onDeleteEmployee
+            );
 
             let filteredEmployees = employeeList.filter(
                 employee => employee.id !== deletedEmployee.id
@@ -65,7 +76,6 @@ export default function EmployeeTable() {
     useEffect(() => {
         async function fetchEmployees() {
             const employees = await Api.getAllEmployees();
-            console.log('employees', employees);
             setEmployeeList(employees);
             setIsLoading(false);
         }

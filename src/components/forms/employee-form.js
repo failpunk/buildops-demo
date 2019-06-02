@@ -1,18 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormState } from 'react-use-form-state';
-import { Button, Grid, TextField, Typography } from '@material-ui/core';
+import { Box, Button, Grid, TextField, Typography } from '@material-ui/core';
 import ChipInput from 'material-ui-chip-input';
 import Api from '../../services/api.service';
+import AddressForm from './address-form';
 
 export default function EmployeeForm({ onFormSubmit }) {
-    const [formState, { text }] = useFormState({});
+    const [formState, { text, raw }] = useFormState({ address: [] });
     const [skills, setSkills] = useState([]);
+
+    useEffect(() => {
+        addNewAddress();
+    }, []);
+
+    function addNewAddress() {
+        const name = 'name' + Date.now();
+
+        formState.setField('address', [
+            ...formState.values.address,
+            { name, values: {} }
+        ]);
+    }
+
+    function updateAddress({ name, values }) {
+        const addressList = [...formState.values.address];
+
+        const indexOfAddress = addressList.findIndex(
+            address => address.name === name
+        );
+
+        addressList[indexOfAddress].values = values;
+
+        formState.setField('address', addressList);
+    }
+
+    function removeAddress(name) {
+        const filteredAddresses = formState.values.address.filter(
+            address => address.name !== name
+        );
+
+        formState.setField('address', filteredAddresses);
+    }
 
     return (
         <form onSubmit={submitForm}>
             <Typography variant="h6" gutterBottom>
-                Enter the new employee details
+                Employee Name
             </Typography>
+
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <TextField
@@ -32,62 +67,46 @@ export default function EmployeeForm({ onFormSubmit }) {
                         autoComplete="lname"
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        required
-                        {...text('line1')}
-                        label="Address line 1"
-                        fullWidth
-                        autoComplete="billing address-line1"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        {...text('line2')}
-                        label="Address line 2"
-                        fullWidth
-                        autoComplete="billing address-line2"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        {...text('city')}
-                        label="City"
-                        fullWidth
-                        autoComplete="billing address-level2"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        {...text('state')}
-                        label="State/Province/Region"
-                        fullWidth
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        required
-                        {...text('zipcode')}
-                        label="Zip / Postal code"
-                        fullWidth
-                        autoComplete="billing postal-code"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <ChipInput
-                        label="Enter some employee skills"
-                        placeholder="html, css, kungfu"
-                        fullWidth
-                        onChange={chips => setSkills(chips)}
-                    />
-                </Grid>
-                <Grid item container justify="center" xs={12}>
-                    <Button type="submit" variant="contained" color="primary">
-                        Submit
+            </Grid>
+
+            <div className="margin-2">
+                {formState.values.address.map(address => {
+                    return (
+                        <AddressForm
+                            key={address.name}
+                            name={address.name}
+                            onRemoveAddress={removeAddress}
+                            {...raw({
+                                name: address.name,
+                                onChange: updateAddress
+                            })}
+                        />
+                    );
+                })}
+
+                <Box m={2} style={{ textAlign: 'center' }}>
+                    <Button variant="contained" onClick={addNewAddress}>
+                        Add Another Address
                     </Button>
-                </Grid>
+                </Box>
+            </div>
+
+            <Grid item xs={12}>
+                <Typography variant="h6" gutterBottom>
+                    Employee Skills
+                </Typography>
+                <ChipInput
+                    label="Enter a skill and press enter"
+                    placeholder="html, css, kungfu"
+                    fullWidth
+                    onChange={chips => setSkills(chips)}
+                />
+            </Grid>
+
+            <Grid item container justify="center" xs={12} className="margin-2">
+                <Button type="submit" variant="contained" color="primary">
+                    Submit
+                </Button>
             </Grid>
         </form>
     );
@@ -97,13 +116,15 @@ export default function EmployeeForm({ onFormSubmit }) {
 
         const { values } = formState;
 
-        let address = {
-            line1: values.line1,
-            line2: values.line2,
-            city: values.city,
-            state: values.state,
-            zipcode: values.zipcode
-        };
+        let addressList = values.address.map(address => {
+            return {
+                line1: address.values.line1,
+                line2: address.values.line2,
+                city: address.values.city,
+                state: address.values.state,
+                zipcode: address.values.zipcode
+            };
+        });
 
         let formattedSkills = skills.map(skill => {
             return { name: skill };
@@ -112,7 +133,7 @@ export default function EmployeeForm({ onFormSubmit }) {
         let employeeData = {
             firstname: values.firstname,
             lastname: values.lastname,
-            address: [address],
+            address: addressList,
             skills: formattedSkills
         };
 
@@ -120,8 +141,6 @@ export default function EmployeeForm({ onFormSubmit }) {
     }
 
     async function createNewEmployee(formValues) {
-        console.log('createNewEmployee', formValues);
-
         try {
             await Api.createEmployee(formValues);
             onFormSubmit();

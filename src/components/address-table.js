@@ -24,10 +24,10 @@ export default function AddressTable({ addresses }) {
                     return (
                         <TableRow key={i}>
                             <TableCell>{address.line1}</TableCell>
-                            <TableCell>Apt 312</TableCell>
-                            <TableCell>Sherman Oaks</TableCell>
-                            <TableCell>CA</TableCell>
-                            <TableCell>91403</TableCell>
+                            <TableCell>{address.line2}</TableCell>
+                            <TableCell>{address.city}</TableCell>
+                            <TableCell>{address.state}</TableCell>
+                            <TableCell>{address.zipcode}</TableCell>
                         </TableRow>
                     );
                 })}

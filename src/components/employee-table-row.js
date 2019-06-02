@@ -24,6 +24,8 @@ export default function EmployeeTableRow({ employee }) {
     async function deleteSkill(name) {
         employee.skills = employee.skills.filter(skill => skill.name !== name);
 
+        console.log('employee', employee);
+
         try {
             await Api.updateEmployee(employee);
         } catch (err) {
