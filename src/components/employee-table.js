@@ -17,7 +17,6 @@ export default function EmployeeTable() {
     const [isLoading, setIsLoading] = useState(true);
 
     function cleanEmployeeObj(employee) {
-        console.log('cleanEmployeeObj', employee);
         delete employee.__typename;
         return employee;
     }

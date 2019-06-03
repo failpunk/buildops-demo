@@ -19,9 +19,8 @@ export default function Album() {
             </AppBar>
 
             <main>
-                <AddEmployee />
-
                 <Container maxWidth="lg">
+                    <AddEmployee />
                     <EmployeeTable />
                 </Container>
             </main>
