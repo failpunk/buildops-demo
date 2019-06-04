@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+// import App from './App';
+import App from './Appv2';
 import './index.css';
 
 import Amplify from '@aws-amplify/core';
