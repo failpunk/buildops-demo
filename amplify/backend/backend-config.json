@@ -1,0 +1,11 @@
+{
+	"api": {
+		"buildopsapi": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"securityType": "API_KEY"
+			}
+		}
+	}
+}

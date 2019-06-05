@@ -7,9 +7,7 @@ import {
 import {
     createEmployee,
     deleteEmployee,
-    updateEmployee,
-    createAddress,
-    createSkill
+    updateEmployee
 } from '../graphql/mutations';
 import { getEmployee, listEmployees } from '../graphql/queries';
 
@@ -48,56 +46,64 @@ export default {
         return this._unwrap(result, 'listEmployees');
     },
 
-    async createEmployee(firstname, lastname) {
-        console.log('createEmployee input', firstname, lastname);
+    async createEmployee({ firstname, lastname, address = [], skills = [] }) {
+        console.log(
+            'createEmployee input',
+            firstname,
+            lastname,
+            address,
+            skills
+        );
 
         const result = await API.graphql(
-            graphqlOperation(createEmployee, { input: { firstname, lastname } })
+            graphqlOperation(createEmployee, {
+                input: { firstname, lastname, address, skills }
+            })
         );
         return this._unwrap(result, 'createEmployee');
     },
 
-    async createAddress(addressArr, employeeId) {
-        console.log('createAddress input', addressArr);
+    // async createAddress(addressArr, employeeId) {s
+    //     console.log('createAddress input', addressArr);
 
-        const results = await Promise.all(
-            addressArr.map(address => {
-                return API.graphql(
-                    graphqlOperation(createAddress, {
-                        input: { ...address, employeeId }
-                    })
-                );
-            })
-        );
+    //     const results = await Promise.all(
+    //         addressArr.map(address => {
+    //             return API.graphql(
+    //                 graphqlOperation(createAddress, {
+    //                     input: { ...address, employeeId }
+    //                 })
+    //             );
+    //         })
+    //     );
 
-        console.log('createAddress result', results);
+    //     console.log('createAddress result', results);
 
-        return results.map(result => this._unwrap(result, 'createAddress'));
-    },
+    //     return results.map(result => this._unwrap(result, 'createAddress'));
+    // },
 
-    async createSkills(skillsArr, employeeId) {
-        console.log('createSkills input', skillsArr);
+    // async createSkills(skillsArr, employeeId) {
+    //     console.log('createSkills input', skillsArr);
 
-        const results = await Promise.all(
-            skillsArr.map(skill => {
-                return API.graphql(
-                    graphqlOperation(createSkill, {
-                        input: { ...skill, employeeId }
-                    })
-                );
-            })
-        );
+    //     const results = await Promise.all(
+    //         skillsArr.map(skill => {
+    //             return API.graphql(
+    //                 graphqlOperation(createSkill, {
+    //                     input: { ...skill, employeeId }
+    //                 })
+    //             );
+    //         })
+    //     );
 
-        console.log('createSkill result', results);
+    //     console.log('createSkill result', results);
 
-        return results.map(result => this._unwrap(result, 'createSkill'));
-    },
+    //     return results.map(result => this._unwrap(result, 'createSkill'));
+    // },
 
     updateEmployee(values) {
         return API.graphql(graphqlOperation(updateEmployee, { input: values }));
     },
 
     deleteEmployee(id) {
-        return API.graphql(graphqlOperation(deleteEmployee, { input: { id } }));
+        API.graphql(graphqlOperation(deleteEmployee, { input: { id } }));
     }
 };

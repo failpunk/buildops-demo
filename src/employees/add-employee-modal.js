@@ -9,13 +9,14 @@ export default function AddEmployeeModal({ isOpen, handleClose: closeModal }) {
 
         try {
             // TODO: Create employee then attach to address and skills?
-            const { firstname, lastname, address, skills } = formData;
+            // const { firstname, lastname, address, skills } = formData;
 
-            const employee = await Api.createEmployee(firstname, lastname);
+            const employee = await Api.createEmployee(formData);
+            console.log('employee', employee);
 
-            const addresses = await Api.createAddress(address, employee.id);
+            // const addresses = await Api.createAddress(address, employee.id);
 
-            const newSkills = await Api.createSkills(skills, employee.id);
+            // const newSkills = await Api.createSkills(skills, employee.id);
 
             closeModal();
         } catch (err) {

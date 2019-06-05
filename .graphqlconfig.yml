@@ -1,5 +1,5 @@
 projects:
-  Buildops Employee:
+  buildopsapi:
     schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js
@@ -10,5 +10,3 @@ projects:
         codeGenTarget: javascript
         generatedFileName: ''
         docsFilePath: src/graphql
-        region: us-west-2
-        maxDepth: 2

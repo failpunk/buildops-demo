@@ -90,9 +90,9 @@ export default function EmployeeDetail({ employeeId }) {
                     >
                         Address List
                     </Typography>
-                    {employee.address.map(address => {
+                    {employee.address.map((address, i) => {
                         return (
-                            <div style={styles.address} key={address.id}>
+                            <div style={styles.address} key={i}>
                                 <p style={styles.addressLine}>
                                     {address.line1} {address.line2}
                                 </p>

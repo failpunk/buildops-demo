@@ -40,10 +40,18 @@ export default function EmployeeList({ onViewEmployee }) {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     async function fetchEmployees() {
-        const employees = await Api.getAllEmployees();
-        setEmployeeList(employees);
-        setIsLoading(false);
-        onViewEmployee(employees[0]);
+        try {
+            const employees = await Api.getAllEmployees();
+            console.log('employees', employees);
+            setEmployeeList(employees);
+            setIsLoading(false);
+
+            if (employees.length) {
+                onViewEmployee(employees[0]);
+            }
+        } catch (error) {
+            console.log('ERROR FETCH EMPS...', error);
+        }
     }
 
     function handleOpen() {
@@ -57,8 +65,8 @@ export default function EmployeeList({ onViewEmployee }) {
 
     async function deleteEmployee(employee) {
         console.log('TODO: delete employee', employee);
-        const deleted = await Api.deleteEmployee(employee.id);
-        console.log('deleteEmployee', deleted);
+        // const deleted = await Api.deleteEmployee(employee.id);
+        // console.log('deleteEmployee', deleted);
     }
 
     return (
@@ -99,6 +107,17 @@ export default function EmployeeList({ onViewEmployee }) {
                                 />
                             );
                         })}
+
+                    {!employeeList.length && (
+                        <TableRow>
+                            <TableCell
+                                style={{ textAlign: 'center' }}
+                                colSpan={3}
+                            >
+                                Add your first employee
+                            </TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
             </Table>
         </React.Fragment>

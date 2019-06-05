@@ -10,10 +10,10 @@ const useStyles = makeStyles(theme => ({
 export default function EmployeeSkills({ skills, onClickedDelete }) {
     const classes = useStyles();
 
-    return skills.map(skill => {
+    return skills.map((skill, i) => {
         return (
             <Chip
-                key={skill.id}
+                key={i}
                 label={skill.name}
                 className={classes.chip}
                 onDelete={() => {

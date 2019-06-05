@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "buildops-dev-20190605153816-authRole",
+            "UnauthRoleArn": "arn:aws:iam::135724430322:role/buildops-dev-20190605153816-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::135724430322:role/buildops-dev-20190605153816-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "buildops-dev-20190605153816-deployment",
+            "UnauthRoleName": "buildops-dev-20190605153816-unauthRole",
+            "StackName": "buildops-dev-20190605153816",
+            "StackId": "arn:aws:cloudformation:us-west-2:135724430322:stack/buildops-dev-20190605153816/9cdc1b20-87e2-11e9-bea7-0adcdede1372"
+        }
+    }
+}
