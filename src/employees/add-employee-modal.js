@@ -5,20 +5,9 @@ import Api from '../services/api.service';
 
 export default function AddEmployeeModal({ isOpen, handleClose: closeModal }) {
     async function formSubmitted(formData) {
-        console.log('formSubmitted', formData);
-
         try {
-            // TODO: Create employee then attach to address and skills?
-            // const { firstname, lastname, address, skills } = formData;
-
-            const employee = await Api.createEmployee(formData);
-            console.log('employee', employee);
-
-            // const addresses = await Api.createAddress(address, employee.id);
-
-            // const newSkills = await Api.createSkills(skills, employee.id);
-
-            closeModal();
+            await Api.createEmployee(formData);
+            closeModal(true);
         } catch (err) {
             console.log('ERROR CREATING NEW EMPOYEE', err);
             closeModal();

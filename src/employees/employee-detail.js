@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 
+import LoadingIndicator from '../components/loading-indicator';
 import EmployeeSkills from '../components/employee-skills';
 import Api from '../services/api.service';
 
@@ -62,11 +63,7 @@ export default function EmployeeDetail({ employeeId }) {
     return (
         <React.Fragment>
             {/* LOADING INDICATOR */}
-            {isLoading && (
-                <Box m={2} style={{ textAlign: 'center' }}>
-                    <CircularProgress color="secondary" />
-                </Box>
-            )}
+            {isLoading && <LoadingIndicator />}
 
             {/* USER DATA */}
             {!isLoading && (

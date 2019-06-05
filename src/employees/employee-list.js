@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
+import LoadingIndicator from '../components/loading-indicator';
 import Api from '../services/api.service';
 import EmployeeListRow from './employee-list-item';
 import AddEmployeeModal from './add-employee-modal';
@@ -41,6 +42,7 @@ export default function EmployeeList({ onViewEmployee }) {
 
     async function fetchEmployees() {
         try {
+            setIsLoading(true);
             const employees = await Api.getAllEmployees();
             console.log('employees', employees);
             setEmployeeList(employees);
@@ -58,15 +60,18 @@ export default function EmployeeList({ onViewEmployee }) {
         setModalIsOpen(true);
     }
 
-    function handleClose() {
+    function handleClose(reloadList = false) {
         setModalIsOpen(false);
-        fetchEmployees();
+
+        if (reloadList === true) {
+            fetchEmployees();
+        }
     }
 
     async function deleteEmployee(employee) {
         console.log('TODO: delete employee', employee);
-        // const deleted = await Api.deleteEmployee(employee.id);
-        // console.log('deleteEmployee', deleted);
+        await Api.deleteEmployee(employee.id);
+        fetchEmployees();
     }
 
     return (
@@ -86,40 +91,44 @@ export default function EmployeeList({ onViewEmployee }) {
 
             <AddEmployeeModal isOpen={modalIsOpen} handleClose={handleClose} />
 
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>First</TableCell>
-                        <TableCell>Last</TableCell>
-                        <TableCell />
-                    </TableRow>
-                </TableHead>
+            {isLoading && <LoadingIndicator />}
 
-                <TableBody>
-                    {!isLoading &&
-                        employeeList.map(employee => {
-                            return (
-                                <EmployeeListRow
-                                    key={employee.id}
-                                    employee={employee}
-                                    onDeleteEmployee={deleteEmployee}
-                                    onViewEmployee={onViewEmployee}
-                                />
-                            );
-                        })}
-
-                    {!employeeList.length && (
+            {!isLoading && (
+                <Table size="small">
+                    <TableHead>
                         <TableRow>
-                            <TableCell
-                                style={{ textAlign: 'center' }}
-                                colSpan={3}
-                            >
-                                Add your first employee
-                            </TableCell>
+                            <TableCell>First</TableCell>
+                            <TableCell>Last</TableCell>
+                            <TableCell />
                         </TableRow>
-                    )}
-                </TableBody>
-            </Table>
+                    </TableHead>
+
+                    <TableBody>
+                        {!isLoading &&
+                            employeeList.map(employee => {
+                                return (
+                                    <EmployeeListRow
+                                        key={employee.id}
+                                        employee={employee}
+                                        onDeleteEmployee={deleteEmployee}
+                                        onViewEmployee={onViewEmployee}
+                                    />
+                                );
+                            })}
+
+                        {!employeeList.length && (
+                            <TableRow>
+                                <TableCell
+                                    style={{ textAlign: 'center' }}
+                                    colSpan={3}
+                                >
+                                    Add your first employee
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+            )}
         </React.Fragment>
     );
 }
