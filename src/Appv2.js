@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Container, makeStyles, Grid, Paper, Toolbar } from '@material-ui/core';
 import clsx from 'clsx';
 
 import EmployeeList from './employees/employee-list';
+import EmployeeDetail from './employees/employee-detail';
 
 const useStyles = makeStyles(theme => ({
     appBarSpacer: theme.mixins.toolbar,
@@ -22,12 +23,27 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         display: 'flex',
         flexDirection: 'column'
+    },
+
+    relative: {
+        position: 'relative'
     }
 }));
 
 export default function App() {
     const classes = useStyles();
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const fixedHeightPaper = clsx(
+        classes.paper,
+        classes.fixedHeight,
+        classes.relative
+    );
+
+    const [employee, setEmployee] = useState({});
+
+    function viewEmployee(selectedEmployee) {
+        console.log('TODO: view employee', selectedEmployee);
+        setEmployee(selectedEmployee);
+    }
 
     return (
         <React.Fragment>
@@ -40,18 +56,18 @@ export default function App() {
             </AppBar>
 
             <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                        {/* Chart */}
                         <Grid item xs={12} md={8} lg={5}>
                             <Paper className={fixedHeightPaper}>
-                                <EmployeeList />
+                                <EmployeeList onViewEmployee={viewEmployee} />
                             </Paper>
                         </Grid>
-                        {/* Recent Deposits */}
+
                         <Grid item xs={12} md={4} lg={7}>
-                            <Paper className={fixedHeightPaper}>Details</Paper>
+                            <Paper className={fixedHeightPaper}>
+                                <EmployeeDetail employee={employee} />
+                            </Paper>
                         </Grid>
                     </Grid>
                 </Container>

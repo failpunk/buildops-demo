@@ -1,15 +1,33 @@
-/* eslint-disable no-script-url */
-
 import React, { useEffect, useState } from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {
+    Fab,
+    makeStyles,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow
+} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 
 import Api from '../services/api.service';
+import EmployeeListRow from './employee-list-item';
 
-export default function Orders() {
+const useStyles = makeStyles(theme => ({
+    fab: {
+        margin: theme.spacing(1),
+        position: 'absolute',
+        right: '10px'
+    },
+
+    extendedIcon: {
+        marginRight: theme.spacing(1)
+    }
+}));
+
+export default function EmployeeList({ onViewEmployee }) {
+    const classes = useStyles();
+
     const [employeeList, setEmployeeList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -19,33 +37,43 @@ export default function Orders() {
             const employees = await Api.getAllEmployees();
             setEmployeeList(employees);
             setIsLoading(false);
+            onViewEmployee(employees[0]);
         }
 
         fetchEmployees();
     }, []);
 
+    function deleteEmployee(employee) {
+        console.log('TODO: delete employee', employee);
+    }
+
     return (
         <React.Fragment>
             <h2>Employees</h2>
+
+            <Fab color="primary" aria-label="Add" className={classes.fab}>
+                <AddIcon />
+            </Fab>
+
             <Table size="small">
                 <TableHead>
                     <TableRow>
                         <TableCell>First</TableCell>
                         <TableCell>Last</TableCell>
-                        <TableCell>Joined On</TableCell>
                         <TableCell />
                     </TableRow>
                 </TableHead>
+
                 <TableBody>
                     {!isLoading &&
                         employeeList.map(employee => {
                             return (
-                                <TableRow key={employee.id}>
-                                    <TableCell>{employee.firstname}</TableCell>
-                                    <TableCell>{employee.lastname}</TableCell>
-                                    <TableCell />
-                                    <TableCell />
-                                </TableRow>
+                                <EmployeeListRow
+                                    key={employee.id}
+                                    employee={employee}
+                                    onDeleteEmployee={deleteEmployee}
+                                    onViewEmployee={onViewEmployee}
+                                />
                             );
                         })}
                 </TableBody>
