@@ -126,7 +126,11 @@ export default function EmployeeForm({ onFormSubmit, onCancel }) {
                 >
                     Submit
                 </Button>
-                <Button variant="contained" className={classes.button} onClick={onCancel}>
+                <Button
+                    variant="contained"
+                    className={classes.button}
+                    onClick={onCancel}
+                >
                     Cancel
                 </Button>
             </Grid>

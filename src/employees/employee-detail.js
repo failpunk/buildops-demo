@@ -36,8 +36,6 @@ const styles = {
 export default function EmployeeDetail({ employeeId }) {
     const classes = useStyles();
 
-    console.log('classes', classes);
-
     const [employee, setEmployee] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
@@ -80,9 +78,11 @@ export default function EmployeeDetail({ employeeId }) {
                     >
                         <EditIcon />
                     </Fab>
+
                     <Typography variant="h4">
                         {employee.firstname} {employee.lastname}
                     </Typography>
+
                     <Typography
                         variant="h6"
                         gutterBottom
