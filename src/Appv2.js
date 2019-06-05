@@ -66,7 +66,9 @@ export default function App() {
 
                         <Grid item xs={12} md={4} lg={7}>
                             <Paper className={fixedHeightPaper}>
-                                <EmployeeDetail employee={employee} />
+                                {employee.id && (
+                                    <EmployeeDetail employeeId={employee.id} />
+                                )}
                             </Paper>
                         </Grid>
                     </Grid>

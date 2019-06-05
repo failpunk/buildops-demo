@@ -1,33 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Fab,
-    makeStyles,
     Table,
     TableBody,
     TableCell,
     TableHead,
-    TableRow
+    TableRow,
+    Typography
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
 
 import Api from '../services/api.service';
 import EmployeeListRow from './employee-list-item';
-
-const useStyles = makeStyles(theme => ({
-    fab: {
-        margin: theme.spacing(1),
-        position: 'absolute',
-        right: '10px'
-    },
-
-    extendedIcon: {
-        marginRight: theme.spacing(1)
-    }
-}));
+import AddEmployeeButton from './add-employee-button';
 
 export default function EmployeeList({ onViewEmployee }) {
-    const classes = useStyles();
-
     const [employeeList, setEmployeeList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -49,11 +34,9 @@ export default function EmployeeList({ onViewEmployee }) {
 
     return (
         <React.Fragment>
-            <h2>Employees</h2>
+            <Typography variant="h5" className="margin-bottom-2">Employees</Typography>
 
-            <Fab color="primary" aria-label="Add" className={classes.fab}>
-                <AddIcon />
-            </Fab>
+            <AddEmployeeButton />
 
             <Table size="small">
                 <TableHead>

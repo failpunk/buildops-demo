@@ -9,11 +9,13 @@ import {
     deleteEmployee,
     updateEmployee
 } from '../graphql/mutations';
-import { listEmployees } from '../graphql/queries';
+import { getEmployee, listEmployees } from '../graphql/queries';
 
 export default {
     unwrap(result, key) {
-        return result.data[key].items;
+        const data = result.data[key];
+
+        return data.items ? data.items : data; // handle arrays and objects
     },
 
     onCreateEmployee(fn) {
@@ -32,6 +34,11 @@ export default {
         return API.graphql(graphqlOperation(subscription)).subscribe({
             next: fn
         });
+    },
+
+    async getOneEmployee(id) {
+        const result = await API.graphql(graphqlOperation(getEmployee, { id }));
+        return this.unwrap(result, 'getEmployee');
     },
 
     async getAllEmployees() {

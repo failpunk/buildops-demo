@@ -1,12 +1,21 @@
 import React from 'react';
-import { Chip } from '@material-ui/core';
+import { Chip, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+    chip: {
+        margin: theme.spacing(0.5)
+    }
+}));
 
 export default function EmployeeSkills({ skills, onClickedDelete }) {
-    return skills.map((skill, i) => {
+    const classes = useStyles();
+
+    return skills.map(skill => {
         return (
             <Chip
-                key={i}
+                key={skill.id}
                 label={skill.name}
+                className={classes.chip}
                 onDelete={() => {
                     onClickedDelete(skill.name);
                 }}
