@@ -14,7 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import LoadingIndicator from '../components/loading-indicator';
 import Api from '../services/api.service';
 import EmployeeListRow from './employee-list-item';
-import AddEmployeeModal from '../components/modals/add-employee-modal';
+import AddEmployeeModal from '../components/modals/employee-modal';
 
 const useStyles = makeStyles(theme => ({
     fab: {
@@ -55,11 +55,14 @@ export default function EmployeeList({ onViewEmployee }) {
         }
     }
 
-    function handleOpen() {
+    function openModal() {
         setModalIsOpen(true);
     }
 
-    function handleClose(reloadList = false) {
+    /**
+     * @param {*} reloadList When true will force a reload of the user list.
+     */
+    function closeModal(reloadList = false) {
         setModalIsOpen(false);
 
         if (reloadList === true) {
@@ -72,6 +75,10 @@ export default function EmployeeList({ onViewEmployee }) {
         fetchEmployees();
     }
 
+    function addNewEmployee(data) {
+        return Api.createEmployee(data);
+    }
+
     return (
         <React.Fragment>
             <Typography variant="h5" className="margin-bottom-2">
@@ -82,12 +89,16 @@ export default function EmployeeList({ onViewEmployee }) {
                 color="primary"
                 aria-label="Add"
                 className={classes.fab}
-                onClick={handleOpen}
+                onClick={openModal}
             >
                 <AddIcon />
             </Fab>
 
-            <AddEmployeeModal isOpen={modalIsOpen} handleClose={handleClose} />
+            <AddEmployeeModal
+                isOpen={modalIsOpen}
+                onCloseModal={closeModal}
+                persistData={addNewEmployee}
+            />
 
             {isLoading && <LoadingIndicator />}
 

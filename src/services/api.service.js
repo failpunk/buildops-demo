@@ -63,7 +63,7 @@ export default {
     },
 
     deleteEmployee(id) {
-        API.graphql(graphqlOperation(deleteEmployee, { input: { id } }));
+        return API.graphql(graphqlOperation(deleteEmployee, { input: { id } }));
     },
 
     async deleteSkill(employee, skill) {

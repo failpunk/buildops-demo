@@ -6,7 +6,7 @@ export default function SkillsInput({ skills = [], onChange }) {
 
     useEffect(() => {
         setChips(skills.map(s => s.name));
-    }, [skills]);
+    }, []);
 
     function addSkill(skill) {
         const updatedChips = [...chips, skill];

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Fab, makeStyles, Typography } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 
-import EditEmployeeModal from '../components/modals/edit-employee-modal';
+import AddEmployeeModal from '../components/modals/employee-modal';
 import LoadingIndicator from '../components/loading-indicator';
 import EmployeeSkills from '../components/employee-skills';
 import EmployeeAddresses from '../components/employee-addresses';
@@ -62,12 +62,16 @@ export default function EmployeeDetail({ employeeId }) {
         setModalIsOpen(true);
     }
 
-    function handleClose(reloadList = false) {
+    function closeModal(reloadList = false) {
         setModalIsOpen(false);
 
         if (reloadList === true) {
             fetchEmployee();
         }
+    }
+
+    function persistEditedEmployee(data) {
+        return Api.updateEmployee({ ...employee, ...data });
     }
 
     return (
@@ -87,10 +91,11 @@ export default function EmployeeDetail({ employeeId }) {
                         <EditIcon />
                     </Fab>
 
-                    <EditEmployeeModal
-                        employee={employee}
+                    <AddEmployeeModal
                         isOpen={modalIsOpen}
-                        handleClose={handleClose}
+                        employee={employee}
+                        onCloseModal={closeModal}
+                        persistData={persistEditedEmployee}
                     />
 
                     <Typography variant="h4" className="margin-bottom-2">
