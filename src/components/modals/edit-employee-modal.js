@@ -1,9 +1,13 @@
 import React from 'react';
 import { Dialog, DialogContent } from '@material-ui/core';
-import AllDetailsForm from '../components/forms/all-details-form';
-import Api from '../services/api.service';
+import AllDetailsForm from '../forms/all-details-form';
+import Api from '../../services/api.service';
 
-export default function AddEmployeeModal({ isOpen, handleClose: closeModal }) {
+export default function EditEmployeeModal({
+    employee,
+    isOpen,
+    handleClose: closeModal
+}) {
     async function formSubmitted(formData) {
         try {
             await Api.createEmployee(formData);
@@ -23,6 +27,7 @@ export default function AddEmployeeModal({ isOpen, handleClose: closeModal }) {
             >
                 <DialogContent className="padding-2">
                     <AllDetailsForm
+                        employee={employee}
                         onFormSubmit={formSubmitted}
                         onCancel={closeModal}
                     />

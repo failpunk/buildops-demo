@@ -10,7 +10,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function AllDetailsForm({ onFormSubmit, onCancel }) {
+export default function AllDetailsForm({
+    employee = {},
+    onFormSubmit,
+    onCancel
+}) {
     const classes = useStyles();
 
     const [user, setUser] = useState({});
@@ -25,17 +29,17 @@ export default function AllDetailsForm({ onFormSubmit, onCancel }) {
         setSkills(skillList);
     }
 
-    function updateAddress(name, addressArr) {
+    function updateAddress(name, address) {
         const otherAddresses = addressList.filter(
             address => address.name !== name
         );
-        setAddressList([...otherAddresses, { name, values: addressArr }]);
+        setAddressList([...otherAddresses, { name, values: address }]);
     }
 
     // Create a new address with a unique key to identify it
-    function addNewAddress() {
+    function addNewAddress(address = {}) {
         const name = 'address' + Date.now();
-        setAddressList([...addressList, { name, values: {} }]);
+        setAddressList([...addressList, { name, values: address }]);
     }
 
     function submitForm(event) {
@@ -54,8 +58,18 @@ export default function AllDetailsForm({ onFormSubmit, onCancel }) {
 
     // Add one default address
     useEffect(() => {
-        addNewAddress();
+        if (employee.firstname) {
+            parseUser(employee);
+        } else {
+            addNewAddress();
+        }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    function parseUser({ firstname, lastname, address, skills }) {
+        updateUser({ firstname, lastname });
+        updateSkills(skills.map(s => s.name));
+        address.map(address => addNewAddress(address));
+    }
 
     return (
         <React.Fragment>
@@ -64,7 +78,7 @@ export default function AllDetailsForm({ onFormSubmit, onCancel }) {
                     Name
                 </Typography>
 
-                <EmployeeInput onChange={updateUser} />
+                <EmployeeInput employee={employee} onChange={updateUser} />
 
                 <Typography variant="h6" gutterBottom>
                     Address
@@ -74,14 +88,14 @@ export default function AllDetailsForm({ onFormSubmit, onCancel }) {
                     return (
                         <AddressInput
                             key={address.name}
-                            name={address.name}
                             onChange={updateAddress}
+                            address={address}
                         />
                     );
                 })}
 
                 <Box m={2} style={{ textAlign: 'center' }}>
-                    <Button variant="contained" onClick={addNewAddress}>
+                    <Button variant="contained" onClick={() => addNewAddress()}>
                         Add Another Address
                     </Button>
                 </Box>
@@ -90,7 +104,7 @@ export default function AllDetailsForm({ onFormSubmit, onCancel }) {
                     Skills
                 </Typography>
 
-                <SkillsInput onChange={updateSkills} />
+                <SkillsInput skills={employee.skills} onChange={updateSkills} />
 
                 <Grid
                     item

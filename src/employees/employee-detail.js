@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Fab, makeStyles, Typography } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 
+import EditEmployeeModal from '../components/modals/edit-employee-modal';
 import LoadingIndicator from '../components/loading-indicator';
 import EmployeeSkills from '../components/employee-skills';
 import EmployeeAddresses from '../components/employee-addresses';
@@ -29,22 +30,23 @@ export default function EmployeeDetail({ employeeId }) {
 
     const [employee, setEmployee] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     // Load existing employees.
     useEffect(() => {
-        async function fetchEmployee() {
-            const employee = await Api.getOneEmployee(employeeId);
-            setEmployee(employee);
-            setIsLoading(false);
-        }
-
         try {
             setIsLoading(true);
             fetchEmployee();
         } catch (error) {
             console.log('error fetching one employee', employeeId, error);
         }
-    }, [employeeId]);
+    }, [employeeId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    async function fetchEmployee() {
+        const employee = await Api.getOneEmployee(employeeId);
+        setEmployee(employee);
+        setIsLoading(false);
+    }
 
     async function deleteSkill(name) {
         const updatedEmployee = await Api.deleteSkill(employee, name);
@@ -54,6 +56,18 @@ export default function EmployeeDetail({ employeeId }) {
     async function deleteAddress(address) {
         const updatedEmployee = await Api.deleteAddress(employee, address);
         setEmployee(updatedEmployee);
+    }
+
+    function handleOpen() {
+        setModalIsOpen(true);
+    }
+
+    function handleClose(reloadList = false) {
+        setModalIsOpen(false);
+
+        if (reloadList === true) {
+            fetchEmployee();
+        }
     }
 
     return (
@@ -68,9 +82,16 @@ export default function EmployeeDetail({ employeeId }) {
                         color="secondary"
                         aria-label="Edit"
                         className={classes.fab}
+                        onClick={handleOpen}
                     >
                         <EditIcon />
                     </Fab>
+
+                    <EditEmployeeModal
+                        employee={employee}
+                        isOpen={modalIsOpen}
+                        handleClose={handleClose}
+                    />
 
                     <Typography variant="h4" className="margin-bottom-2">
                         {employee.firstname} {employee.lastname}

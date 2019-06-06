@@ -41,7 +41,6 @@ export default function App() {
     const [employee, setEmployee] = useState({});
 
     function viewEmployee(selectedEmployee) {
-        console.log('TODO: view employee', selectedEmployee);
         setEmployee(selectedEmployee);
     }
 

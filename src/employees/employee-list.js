@@ -14,7 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import LoadingIndicator from '../components/loading-indicator';
 import Api from '../services/api.service';
 import EmployeeListRow from './employee-list-item';
-import AddEmployeeModal from './add-employee-modal';
+import AddEmployeeModal from '../components/modals/add-employee-modal';
 
 const useStyles = makeStyles(theme => ({
     fab: {
@@ -44,7 +44,6 @@ export default function EmployeeList({ onViewEmployee }) {
         try {
             setIsLoading(true);
             const employees = await Api.getAllEmployees();
-            console.log('employees', employees);
             setEmployeeList(employees);
             setIsLoading(false);
 

@@ -1,43 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useFormState } from 'react-use-form-state';
 import { Grid, TextField } from '@material-ui/core';
 
-export default function EmployeeInput({ onChange }) {
-    let [user, setUser] = useState({ firstname: '', lastname: '' });
+export default function EmployeeInput({ employee = {}, onChange }) {
+    const [formState, { text }] = useFormState(null, {
+        // Watch form changes and propagate with onChange.
+        onChange: (e, stateValues, nextStateValues) => {
+            onChange(nextStateValues);
+        }
+    });
 
-    function updateFirstname({ target }) {
-        updateValue('firstname', target.value);
-    }
-
-    function updateLastname({ target }) {
-        updateValue('lastname', target.value);
-    }
-
-    function updateValue(key, value) {
-        const updatedState = { ...user, [key]: value };
-        setUser(updatedState);
-        onChange(updatedState);
-    }
+    // Apply existingn values to form
+    useEffect(() => {
+        formState.setField('firstname', employee.firstname);
+        formState.setField('lastname', employee.lastname);
+    }, []); // esslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Grid container spacing={3} className="margin-bottom-2">
             <Grid item xs={12} sm={6}>
                 <TextField
                     required
-                    name="firstname"
+                    {...text('firstname')}
                     label="First name"
                     fullWidth
                     autoComplete="fname"
-                    onChange={updateFirstname}
                 />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <TextField
                     required
-                    name="lastname"
+                    {...text('lastname')}
                     label="Last name"
                     fullWidth
                     autoComplete="lname"
-                    onChange={updateLastname}
                 />
             </Grid>
         </Grid>

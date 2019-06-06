@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormState } from 'react-use-form-state';
 import { Grid, TextField } from '@material-ui/core';
 
-export default function AddressInput({ name, onChange }) {
+export default function AddressInput({ address = {}, onChange }) {
     // eslint-disable-next-line no-unused-vars
     const [formState, { text }] = useFormState(null, {
         // Watch form changes and propagate with onChange.
         onChange: (e, stateValues, nextStateValues) => {
-            onChange(name, nextStateValues);
+            onChange(address.name, nextStateValues);
         }
     });
+
+    // Apply existingn values to form
+    useEffect(() => {
+        Object.keys(address.values).forEach(key => {
+            formState.setField(key, address.values[key]);
+        });
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Grid container spacing={3} className="margin-bottom-2">
