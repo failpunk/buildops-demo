@@ -25,3 +25,7 @@ code {
 .relative {
     position: relative !important;
 }
+
+.snackbar-error .MuiSnackbarContent-root{
+    background: red;
+}

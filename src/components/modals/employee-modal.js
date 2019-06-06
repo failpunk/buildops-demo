@@ -1,21 +1,28 @@
-import React from 'react';
-import { Dialog, DialogContent } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Dialog, DialogContent, Snackbar } from '@material-ui/core';
 import AllDetailsForm from '../forms/full-employee-form';
 
 export default function AddEmployeeModal({
     employee = {},
     isOpen,
-    onCloseModal: closeModal,
+    onCloseModal,
     persistData
 }) {
+    const [error, setError] = useState('');
+
     async function formSubmitted(formData) {
         try {
             await persistData(formData);
             closeModal(true);
         } catch (err) {
             console.log('ERROR CREATING NEW EMPOYEE', err);
-            closeModal();
+            setError(err.errors[0].message);
         }
+    }
+
+    function closeModal(reloadList = false) {
+        setError('');
+        onCloseModal(reloadList);
     }
 
     return (
@@ -24,6 +31,13 @@ export default function AddEmployeeModal({
             onClose={closeModal}
             aria-labelledby="form-dialog-title"
         >
+            <Snackbar
+                open={!!error}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                message={<span id="message-id">{error}</span>}
+                className="snackbar-error"
+            />
+
             <DialogContent className="padding-2">
                 <AllDetailsForm
                     employee={employee}
