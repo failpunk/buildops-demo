@@ -33,7 +33,7 @@ export default function EmployeeList({ onViewEmployee }) {
 
     const [employeeList, setEmployeeList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [modalIsOpen, setModalIsOpen] = useState(true);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     // Load existing employees.
     useEffect(() => {
@@ -69,7 +69,6 @@ export default function EmployeeList({ onViewEmployee }) {
     }
 
     async function deleteEmployee(employee) {
-        console.log('TODO: delete employee', employee);
         await Api.deleteEmployee(employee.id);
         fetchEmployees();
     }

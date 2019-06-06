@@ -56,8 +56,11 @@ export default function EmployeeDetail({ employeeId }) {
         }
     }, [employeeId]);
 
-    function deleteSkill(name) {
-        console.log('TODO: delete skill', name);
+    async function deleteSkill(name) {
+        console.log('TODO: delete skill', name, employee);
+        const updatedEmployee = await Api.deleteSkill(employee, name);
+        console.log('UPDATED EMPLOLYEE', updatedEmployee);
+        setEmployee(updatedEmployee);
     }
 
     return (
