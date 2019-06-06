@@ -131,9 +131,9 @@ export default function AllDetailsForm({
                 </Grid>
             </form>
 
-            <pre>{JSON.stringify(user, null, 4)}</pre>
+            {/* <pre>{JSON.stringify(user, null, 4)}</pre>
             <pre>{JSON.stringify(skills, null, 4)}</pre>
-            <pre>{JSON.stringify(addressList, null, 4)}</pre>
+            <pre>{JSON.stringify(addressList, null, 4)}</pre> */}
         </React.Fragment>
     );
 }

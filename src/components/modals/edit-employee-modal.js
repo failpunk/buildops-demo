@@ -10,7 +10,7 @@ export default function EditEmployeeModal({
 }) {
     async function formSubmitted(formData) {
         try {
-            await Api.createEmployee(formData);
+            await Api.updateEmployee({ ...employee, ...formData });
             closeModal(true);
         } catch (err) {
             console.log('ERROR CREATING NEW EMPOYEE', err);

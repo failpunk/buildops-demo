@@ -5,19 +5,16 @@ export default function SkillsInput({ skills = [], onChange }) {
     const [chips, setChips] = useState([]);
 
     useEffect(() => {
-        console.log('skills', skills);
         setChips(skills.map(s => s.name));
-    }, []); // esslint-disable-line react-hooks/exhaustive-deps
+    }, [skills]);
 
     function addSkill(skill) {
-        console.log('sklill', skill);
         const updatedChips = [...chips, skill];
         setChips(updatedChips);
         onChange(updatedChips);
     }
 
     function removeSkill(skill) {
-        console.log('sklill', skill);
         const filteredChips = chips.filter(c => c !== skill);
         setChips(filteredChips);
         onChange(filteredChips);

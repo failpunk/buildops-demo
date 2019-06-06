@@ -47,14 +47,6 @@ export default {
     },
 
     async createEmployee({ firstname, lastname, address = [], skills = [] }) {
-        console.log(
-            'createEmployee input',
-            firstname,
-            lastname,
-            address,
-            skills
-        );
-
         const result = await API.graphql(
             graphqlOperation(createEmployee, {
                 input: { firstname, lastname, address, skills }
@@ -63,8 +55,11 @@ export default {
         return this._unwrap(result, 'createEmployee');
     },
 
-    updateEmployee(values) {
-        return API.graphql(graphqlOperation(updateEmployee, { input: values }));
+    async updateEmployee(values) {
+        const result = await API.graphql(
+            graphqlOperation(updateEmployee, { input: values })
+        );
+        return this._unwrap(result, 'updateEmployee');
     },
 
     deleteEmployee(id) {
@@ -75,11 +70,7 @@ export default {
         let updatedEmployee = { ...employee };
         updatedEmployee.skills = employee.skills.filter(s => s.name !== skill);
 
-        const result = await API.graphql(
-            graphqlOperation(updateEmployee, { input: updatedEmployee })
-        );
-
-        return this._unwrap(result, 'updateEmployee');
+        return this.updateEmployee(updatedEmployee);
     },
 
     async deleteAddress(employee, address) {
