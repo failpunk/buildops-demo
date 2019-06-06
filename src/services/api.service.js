@@ -80,5 +80,24 @@ export default {
         );
 
         return this._unwrap(result, 'updateEmployee');
+    },
+
+    async deleteAddress(employee, address) {
+        let updatedEmployee = { ...employee };
+
+        // TODO: not the best way to remove an address
+        updatedEmployee.address = employee.address.filter(a => {
+            return (
+                a.line1 !== address.line1 &&
+                a.line2 !== address.line2 &&
+                a.zipcode !== address.zipcode
+            );
+        });
+
+        const result = await API.graphql(
+            graphqlOperation(updateEmployee, { input: updatedEmployee })
+        );
+
+        return this._unwrap(result, 'updateEmployee');
     }
 };

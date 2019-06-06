@@ -21,3 +21,7 @@ code {
 .padding-2 {
     padding: 2rem !important;
 }
+
+.relative {
+    position: relative !important;
+}

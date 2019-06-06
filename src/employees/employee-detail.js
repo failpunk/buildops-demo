@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import {
-    Box,
-    CircularProgress,
-    Fab,
-    makeStyles,
-    Typography
-} from '@material-ui/core';
+import { Fab, makeStyles, Typography } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 
 import LoadingIndicator from '../components/loading-indicator';
 import EmployeeSkills from '../components/employee-skills';
+import EmployeeAddresses from '../components/employee-addresses';
 import Api from '../services/api.service';
 
 const useStyles = makeStyles(theme => ({
@@ -20,19 +15,14 @@ const useStyles = makeStyles(theme => ({
         fontWeight: '700'
     },
     title: {
-        marginTop: theme.spacing(2)
-    }
-}));
-
-const styles = {
-    address: {
+        marginTop: theme.spacing(2),
         marginBottom: '1rem'
     },
-
-    addressLine: {
-        margin: 0
+    fab: {
+        position: 'absolute',
+        right: '10px'
     }
-};
+}));
 
 export default function EmployeeDetail({ employeeId }) {
     const classes = useStyles();
@@ -57,9 +47,12 @@ export default function EmployeeDetail({ employeeId }) {
     }, [employeeId]);
 
     async function deleteSkill(name) {
-        console.log('TODO: delete skill', name, employee);
         const updatedEmployee = await Api.deleteSkill(employee, name);
-        console.log('UPDATED EMPLOLYEE', updatedEmployee);
+        setEmployee(updatedEmployee);
+    }
+
+    async function deleteAddress(address) {
+        const updatedEmployee = await Api.deleteAddress(employee, address);
         setEmployee(updatedEmployee);
     }
 
@@ -79,7 +72,7 @@ export default function EmployeeDetail({ employeeId }) {
                         <EditIcon />
                     </Fab>
 
-                    <Typography variant="h4">
+                    <Typography variant="h4" className="margin-bottom-2">
                         {employee.firstname} {employee.lastname}
                     </Typography>
 
@@ -90,17 +83,15 @@ export default function EmployeeDetail({ employeeId }) {
                     >
                         Address List
                     </Typography>
+
                     {employee.address.map((address, i) => {
                         return (
-                            <div style={styles.address} key={i}>
-                                <p style={styles.addressLine}>
-                                    {address.line1} {address.line2}
-                                </p>
-                                <p style={styles.addressLine}>
-                                    {address.city}, {address.state}{' '}
-                                    {address.zipcode}
-                                </p>
-                            </div>
+                            <EmployeeAddresses
+                                key={i}
+                                address={address}
+                                className="margin-bottom-2"
+                                onDelete={deleteAddress}
+                            />
                         );
                     })}
 
@@ -115,6 +106,7 @@ export default function EmployeeDetail({ employeeId }) {
                     <EmployeeSkills
                         skills={employee.skills}
                         onClickedDelete={deleteSkill}
+                        className="margin-bottom-2"
                     />
                 </div>
             )}
