@@ -19,7 +19,7 @@
 				"securityType": "API_KEY",
 				"GraphQLAPIIdOutput": "6kvbeu3j6veerhusidzmekgbkq",
 				"GraphQLAPIEndpointOutput": "https://njkct2x7mvfgpnkfbmlerbibsi.appsync-api.us-west-2.amazonaws.com/graphql",
-				"GraphQLAPIKeyOutput": "da2-qc2tyxbgivbkhnm54vms5czsba"
+				"GraphQLAPIKeyOutput": "da2-b452dzprefbqjblcqv22ekzeh4"
 			},
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/buildops-dev-20190605153816-deployment/amplify-cfn-templates/api/cloudformation-template.json",
